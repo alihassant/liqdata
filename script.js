@@ -23,6 +23,7 @@ function calculateAllLiquidation() {
     }
 
     displayResults(results);
+    generateLevelsTable(price);
 }
 
 function displayResults(results) {
@@ -43,4 +44,38 @@ function displayResults(results) {
             `).join('')}
         </table>
     `;
+}
+
+function generateLevelsTable(price) {
+    const levels = [33, 44, 48, 57, 66, 77, 88, 111, 125, 150, 166, 177, 186, 200, 225, 275, 288, 330, 440];
+
+    const levelsTable = document.getElementById('levelsTable');
+    levelsTable.innerHTML = `
+        <table>
+            <tr>
+                <th>Level</th>
+                <th>Added (+)</th>
+                <th>Subtracted (-)</th>
+                <th>Type</th>
+            </tr>
+            ${levels.map(level => `
+                <tr>
+                    <td>${level}</td>
+                    <td>${(price + level).toFixed(2)}</td>
+                    <td>${(price - level).toFixed(2)}</td>
+                    <td>${getLevelType(level)}</td>
+                </tr>
+            `).join('')}
+        </table>
+    `;
+}
+
+function getLevelType(level) {
+    if (level >= 111 && level <= 200) {
+        return 'Scalp Levels';
+    } else if (level === 225 || level === 275) {
+        return 'Swing Levels';
+    } else {
+        return 'Regular Levels';
+    }
 }
